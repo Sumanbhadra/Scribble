@@ -8,7 +8,9 @@ function App() {
         <div className="flex justify-center">
           <div className="bg-white">
           <DrawingCanvas />
+      
           </div>
+          <div className="flex justify-center gap-2  p-2">hiijfjskaldfjla</div>
         </div>
       </div>
 
