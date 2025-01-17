@@ -9,7 +9,7 @@ Scribble Together is a fun and interactive website where you can spend quality t
 - **🎨 Doodle It Out**  
   Express words or phrases through fun sketches while others try to guess them.
 
-- **🗣️ Real-Time Voice Chat**  
+- **🗣️ Real-Time Text and Voice Chat**  
   Add a personal touch to the game by chatting with your friends and family as you play.
 
 - **🎯 Guess & Win**  
@@ -70,5 +70,5 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ## 🌐 Connect with Us
 
 For feedback, suggestions, or queries, feel free to reach out:  
-📧 Email: your-email@example.com  
+📧 Email: bhadrasuman04@gmail.com  
 📱 Instagram: [@scribble_together](#)  
