@@ -1,9 +1,24 @@
 import React, { useEffect, useState, useRef } from "react";
 import io from "socket.io-client";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import { useContext } from "react";
+import { userContext } from "../App";
 
 const socket = io("http://localhost:4000");
 
 const RealTimeChat = () => {
+  const { id } = useParams();
+  const { name} = useContext(userContext);
+
+  axios
+    .post("http://localhost:4000/api/room", { id })
+    .then((response) => {
+      console.log("Success:", response.data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
   const [message, setMessage] = useState("");
   const [receivedMessages, setReceivedMessages] = useState([]);
   const chatContainerRef = useRef(null); // Reference to chat container for scrolling
@@ -15,6 +30,9 @@ const RealTimeChat = () => {
 
   // Listen for messages from the server
   useEffect(() => {
+    // Join the room
+    socket.emit("joinRoom", id);
+
     socket.on("receive_message", (message) => {
       setReceivedMessages((prevMessages) => [...prevMessages, message]); // Add new message to the bottom
     });
@@ -28,14 +46,21 @@ const RealTimeChat = () => {
   // Scroll to the bottom when new messages are added
   useEffect(() => {
     if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
     }
   }, [receivedMessages]); // Trigger scroll when receivedMessages changes
 
   const sendMessage = () => {
     if (message.trim()) {
-      socket.emit("send_message", message); // Emit the message to the server
-      setReceivedMessages((prevMessages) => [...prevMessages, message]); // Add your own message to the bottom
+
+      const messageData = {
+        text: message,  // Message content
+        sender: name,   // Sender's name
+      };
+
+      socket.emit("send_message", messageData); // Emit the message to the server
+      setReceivedMessages((prevMessages) => [...prevMessages, messageData]); // Add your own message to the bottom
       setMessage(""); // Clear the input after sending the message
     }
   };
@@ -52,7 +77,7 @@ const RealTimeChat = () => {
               key={index}
               className="p-2 bg-slate-100 rounded-sm mb-1 text-xs text-wrap"
             >
-              {msg}
+              <strong>{msg.sender}:</strong> {msg.text}
             </div>
           ))}
         </div>
